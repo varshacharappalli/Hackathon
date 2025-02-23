@@ -2,6 +2,7 @@ import 'bulma/css/bulma.css';
 import React, { useState, useCallback } from 'react';
 import { Upload, Loader } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import '../styling/Home.css';
 
 export default function Home() {
   const [isDragging, setIsDragging] = useState(false);
@@ -37,7 +38,6 @@ export default function Home() {
 
   const handleUpload = () => {
     setIsUploading(true);
-    // Simulate an upload action
     setTimeout(() => {
       setIsUploading(false);
       alert('File uploaded successfully!');
@@ -47,7 +47,6 @@ export default function Home() {
   const handleGeneratePortfolio = () => {
     if (file) {
       setIsUploading(true);
-      // Simulate file processing before navigation
       setTimeout(() => {
         setIsUploading(false);
         navigate('/createportfolio');
@@ -56,13 +55,11 @@ export default function Home() {
   };
 
   return (
-    <div className="hero is-fullheight has-background-gradient">
+    <div className="hero is-fullheight">
       <div className="hero-body">
         <div className="container has-text-centered">
           {/* Header */}
-          <h1 className="title has-text-white is-size-2 has-text-weight-bold mb-6">
-            AI Resume Optimizer
-          </h1>
+          <h1 className="title">AI Resume Optimizer</h1>
 
           {/* Main Content */}
           <div className="box">
@@ -72,14 +69,6 @@ export default function Home() {
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               className={`dropzone ${isDragging ? 'is-active' : ''}`}
-              style={{
-                border: '2px dashed',
-                borderColor: isDragging ? '#ffdd57' : '#ccc',
-                padding: '2rem',
-                borderRadius: '8px',
-                transition: 'background-color 0.3s',
-                backgroundColor: file ? '#f5f5f5' : 'transparent',
-              }}
             >
               <input
                 type="file"
@@ -87,12 +76,11 @@ export default function Home() {
                 onChange={handleFileSelect}
                 className="file-input"
                 id="file-upload"
-                style={{ display: 'none' }}
                 aria-label="Upload PDF Resume"
               />
               <label htmlFor="file-upload" className="file-label">
-                <Upload className="icon is-large" style={{ color: '#ffdd57' }} />
-                <p className="subtitle has-text-white">
+                <Upload className="icon" />
+                <p className="subtitle">
                   {file ? file.name : 'Drag and drop your PDF resume here'}
                 </p>
                 <p className="has-text-grey">
@@ -102,9 +90,9 @@ export default function Home() {
             </div>
 
             {/* Buttons */}
-            <div className="buttons is-centered mt-4">
+            <div className="buttons">
               <button
-                className="button is-warning is-medium"
+                className="button is-warning"
                 disabled={!file || isUploading}
                 onClick={handleUpload}
                 aria-label="Check Resume Score"
@@ -113,7 +101,7 @@ export default function Home() {
                 {isUploading && '...'}
               </button>
               <button
-                className="button is-danger is-medium"
+                className="button is-danger"
                 disabled={!file || isUploading}
                 onClick={handleGeneratePortfolio}
                 aria-label="Generate Portfolio"
@@ -126,13 +114,13 @@ export default function Home() {
 
           {/* Footer */}
           <div className="mt-6">
-            <a href="#" className="has-text-grey-dark mr-4" aria-label="Privacy Policy">
+            <a href="#" className="footer-link" aria-label="Privacy Policy">
               Privacy Policy
             </a>
-            <a href="#" className="has-text-grey-dark mr-4" aria-label="Terms of Service">
+            <a href="#" className="footer-link" aria-label="Terms of Service">
               Terms of Service
             </a>
-            <a href="#" className="has-text-grey-dark" aria-label="Contact">
+            <a href="#" className="footer-link" aria-label="Contact">
               Contact
             </a>
           </div>
@@ -141,3 +129,4 @@ export default function Home() {
     </div>
   );
 }
+
