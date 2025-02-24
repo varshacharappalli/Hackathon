@@ -3,7 +3,13 @@ import axios from "axios";
 export const fetchResumeData = async () => {
   try {
     const API_URL = "http://127.0.0.1:8000/extract";
-    const response = await axios.get(API_URL);
+    const response = await axios.get(API_URL, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      withCredentials: false  // Set this to false since we're not using credentials
+    });
     
     console.log("Raw API Response:", response.data); // Check the response format
 
@@ -29,6 +35,7 @@ export const fetchResumeData = async () => {
     return null;
   }
 };
+
 
 
 

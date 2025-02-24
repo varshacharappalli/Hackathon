@@ -8,15 +8,15 @@ app=FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Your React app's URL
+    allow_origins=["http://localhost:5173"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load SpaCy model & Together API
+
 nlp = spacy.load("en_core_web_sm")
-client = Together(api_key="1ad7ef03cfb27a21c12f21566b97620a46f199cfc5b5a5e356d05d399d0a9606")
+client = Together(api_key="tgp_v1_N1S5muxlx7i0LyNSuY77QOCY0ho46xwB9J8WDuLGRrg")
 
 def extract_text_from_pdf(pdf_path):
     return extract_text(pdf_path)
