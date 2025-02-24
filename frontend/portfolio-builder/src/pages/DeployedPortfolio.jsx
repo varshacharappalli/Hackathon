@@ -20,12 +20,12 @@ const DeployedPortfolio = ({ templateId = 1, data }) => {
           onClick={deployTemplate}
           className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
         >
-          Deploy Portfolio
+          Click to view Source Code
         </button>
       </div>
       {deployUrl && (
         <p className="mt-4 text-green-600 font-medium text-center">
-          Deployed successfully! Visit:{" "}
+          View the source code:{" "}
           <a href={deployUrl} target="_blank" rel="noopener noreferrer" className="underline">
             {deployUrl}
           </a>
