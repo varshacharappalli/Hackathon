@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Handlebars from "handlebars";
 
-const DeployedPortfolio = ({ templateId, data }) => {
+const DeployedPortfolio = ({ templateId=1, data }) => {
   const [template, setTemplate] = useState({ html: "", css: "" });
   const [deployUrl, setDeployUrl] = useState("");
   const [error, setError] = useState(null);
 
   const githubRepo = "varshacharappalli/Hackathon";
-  const baseUrl = `https://raw.githubusercontent.com/${githubRepo}/main/frontend/portfolio-builder/src/temp${templateId}/`;
+  const baseUrl = `https://raw.githubusercontent.com/${githubRepo}/main/frontend/portfolio-builder/src/temp/`;
 
   useEffect(() => {
     const loadTemplate = async () => {

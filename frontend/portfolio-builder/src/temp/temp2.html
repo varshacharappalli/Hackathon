@@ -4,24 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{Name}} - Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="temp2.css">
 </head>
 <body>
     <div class="container">
         <!-- Header Section -->
         <header>
             <h1>{{Name}}</h1>
-            <p class="subheading">Software Developer | Tech Enthusiast</p>
             <div class="contact-info">
-                <p>📞 {{Phone}}</p>
-                <p>📧 {{Email}}</p>
+                <p><i class="contact-icon">📞</i> {{Phone}}</p>
+                <p><i class="contact-icon">📧</i> {{Email}}</p>
             </div>
         </header>
 
         <!-- Skills Section -->
         <section class="skills-section">
             <h2>Technical Skills</h2>
-            <div class="skills-grid">
+            <div class="skills-grid" id="skills-container">
                 {{#each Skills}}
                 <div class="skill-item">{{this}}</div>
                 {{/each}}
@@ -46,8 +45,8 @@
                 {{#each WorkExperience}}
                 <div class="experience-item">
                     <h3>{{this.title}}</h3>
-                    <p class="company">{{this.company}}</p>
-                    <p class="duration">{{this.duration}}</p>
+                    <p>{{this.company}}</p>
+                    <p>{{this.duration}}</p>
                 </div>
                 {{/each}}
             </div>
