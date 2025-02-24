@@ -1,0 +1,127 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Light gray background */
+    margin: 0;
+    padding: 0;
+    color: #212529; /* Set a base text color */
+}
+
+/* Container Styles */
+.max-w-4xl {
+    max-width: 64rem; /* 1024px */
+    margin: 0 auto; /* Center align */
+    padding: 1rem; /* Add padding */
+}
+
+/* Header Styles */
+header {
+    margin-bottom: 2rem;
+    text-align: center; /* Centered header */
+}
+
+h1 {
+    color: #343a40; /* Dark Gray */
+    font-size: 2.5rem; /* Larger font size */
+    text-transform: uppercase; /* Make header uppercase */
+    letter-spacing: 1px; /* Space between letters */
+}
+
+h2 {
+    color: #495057; /* Medium Gray */
+    border-bottom: 2px solid #6c757d; /* Underline effect */
+    padding-bottom: 0.5rem; /* Space below the header */
+}
+
+/* About Section */
+section {
+    margin-bottom: 2rem;
+    background-color: #ffffff; /* White background for sections */
+    padding: 2rem; /* Padding for sections */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Subtle shadow */
+}
+
+p {
+    line-height: 1.6;
+}
+
+/* Skills Section */
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Skill Card Styles */
+.skill-card {
+    background-color: #e7f1ff; /* Light Blue */
+    border-radius: 6px; /* Rounded corners for skills */
+    padding: 1rem; /* Padding inside the card */
+    margin: 0.5rem; /* Margin between cards */
+    transition: transform 0.2s; /* Smooth scaling on hover */
+}
+
+.skill-card:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* General Button Styles */
+button {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 0.5rem 1rem; /* Padding */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition for background */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+  .text-blue-800 {
+    color: #0056b3; /* Dark Blue */
+  }
+  
+  /* Projects Section */
+  .border {
+    border: 1px solid #dee2e6; /* Light Gray */
+  }
+  
+  .hover\:shadow-lg:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Contact Section */
+  footer {
+    border-top: 1px solid #dee2e6; /* Light Gray */
+    padding-top: 2rem;
+  }
+  
+  .text-gray-700 {
+    color: #495057; /* Medium Gray */
+  }
+  
+  .text-blue-600 {
+    color: #007bff; /* Blue */
+  }
+  
+  .text-blue-800 {
+    color: #0056b3; /* Dark Blue */
+  }
+  
+  /* Button Styles */
+  button {
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Dark Blue */
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr; /* Single column on small screens */
+    }
+  }
