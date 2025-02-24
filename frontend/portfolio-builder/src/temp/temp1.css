@@ -104,7 +104,7 @@ h2 {
     border-radius: 6px;
     border-left: 4px solid #b68d40;
     margin-bottom: 1rem;
-    transition: background 0.3s ease;
+    transition:  0.3s ease;
 }
 
 .achievements-list li:hover {

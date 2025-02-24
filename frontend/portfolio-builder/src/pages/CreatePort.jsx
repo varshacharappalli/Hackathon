@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Layout, Palette, Code, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import '../styling/CreatePort.css';
+import { template } from 'handlebars';
 
 const CreatePort = () => {
   const [selectedTemplate, setSelectedTemplate] = useState(1);
@@ -40,6 +41,7 @@ const CreatePort = () => {
   const handleGeneratePortfolio = () => {
     navigate('/createdportfolio', { state: { templateId: selectedTemplate } });
   };
+
 
   const selectedTemplateDetails = templates.find(t => t.id === selectedTemplate);
 
