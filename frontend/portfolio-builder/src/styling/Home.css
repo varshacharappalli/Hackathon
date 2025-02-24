@@ -1,48 +1,21 @@
 /* Apply styles to the main container */
-.home-container {
-  min-height: 100vh;
-  background: linear-gradient(to bottom right, black, #1a1a2e, #6a0572);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Background animation */
-.home-container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url('/path/to/high-quality-background.jpg') center/cover no-repeat;
-  opacity: 0.3;
-  filter: blur(10px);
-  animation: fadeIn 2s ease-in-out;
-  z-index: -1;
+.hero {
+  background-color: white;
 }
 
 /* Title styling */
-.home-title {
-  font-size: 3rem;
-  font-weight: 800;
-  text-align: center;
-  background-clip: text;
-  color: transparent;
-  background-image: linear-gradient(to right, #a855f7, #3b82f6);
-  text-shadow: 0 4px 10px rgba(168, 85, 247, 0.5);
+.title {
+  color: black;
 }
 
 /* Drop Zone */
 .dropzone {
-  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border: 2px dashed rgba(0, 0, 0, 0.3);
   padding: 2rem;
   border-radius: 12px;
   text-align: center;
   transition: background-color 0.3s, border-color 0.3s;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .dropzone.is-active {
@@ -59,6 +32,7 @@
 .file-label {
   cursor: pointer;
   display: block;
+  color: black;
 }
 
 .file-input {
@@ -67,10 +41,14 @@
 
 .subtitle {
   color: white;
+  font-size: 1rem;
+  font-weight: normal;
 }
 
 .has-text-grey {
-  color: #b0b0b0;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: normal;
 }
 
 /* Buttons */
@@ -78,6 +56,7 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-top: 1rem;
 }
 
 .button {
@@ -85,16 +64,8 @@
   padding: 0.75rem 1.5rem;
   border-radius: 10px;
   transition: all 0.3s ease-in-out;
-}
-
-.button.is-warning {
-  background: linear-gradient(to right, #ffdd57, #ff9f43);
-  border: none;
-  color: black;
-}
-
-.button.is-danger {
-  background: linear-gradient(to right, #ff3860, #ff0055);
+  color: white;
+  background-color: black;
   border: none;
 }
 
@@ -116,17 +87,26 @@
   margin-top: 1.5rem;
 }
 
-.mt-6 a {
+.footer-link {
   color: #b0b0b0;
   text-decoration: none;
   margin-right: 1rem;
 }
 
-.mt-6 a:hover {
+.footer-link:hover {
   text-decoration: underline;
 }
 
-/* Animations */
+/* Highlighted Borders */
+.highlighted {
+  border: 2px solid #ffdd57;
+}
+
+.highlighted-button {
+    border: 2px solid #ffdd57;
+}
+
+/* Animations (if needed) */
 @keyframes fadeIn {
   from {
     opacity: 0;

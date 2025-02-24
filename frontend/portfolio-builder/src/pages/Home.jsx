@@ -36,12 +36,14 @@ export default function Home() {
     }
   }, []);
 
-  const handleUpload = () => {
-    setIsUploading(true);
-    setTimeout(() => {
-      setIsUploading(false);
-      alert('File uploaded successfully!');
-    }, 2000);
+  const handleCheckScore = () => {
+    if (file) {
+      setIsUploading(true);
+      setTimeout(() => {
+        setIsUploading(false);
+        navigate('/checkscore');
+      }, 1000);
+    }
   };
 
   const handleGeneratePortfolio = () => {
@@ -94,7 +96,7 @@ export default function Home() {
               <button
                 className="button is-warning"
                 disabled={!file || isUploading}
-                onClick={handleUpload}
+                onClick={handleCheckScore}
                 aria-label="Check Resume Score"
               >
                 {isUploading ? <Loader className="icon" /> : 'Check Score'}
@@ -129,4 +131,3 @@ export default function Home() {
     </div>
   );
 }
-

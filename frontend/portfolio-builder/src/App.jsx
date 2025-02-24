@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Portfolio from "./pages/Portfolio";
 import Home from './pages/Home';
 import CreatePort from './pages/CreatePort';
+import CheckScore from './pages/CheckScore';
 
 
 function App() {

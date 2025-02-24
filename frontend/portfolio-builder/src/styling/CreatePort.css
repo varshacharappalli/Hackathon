@@ -44,7 +44,7 @@
 
 @media (min-width: 768px) {
   .template-grid {
-      grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -63,11 +63,11 @@
 
 .template-card:hover {
   border-color: black;
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .selected-template {
-  border-color: black;
+  border-color: #ffdd57;
   transform: scale(1.1);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -98,6 +98,7 @@
   gap: 0.75rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease-in-out;
+  border: 2px solid transparent;
 }
 
 .generate-btn:hover {
@@ -105,23 +106,32 @@
   transform: scale(1.1);
 }
 
+.generate-btn.highlighted {
+  border-color: #ffdd57;
+}
+
+/* Icons */
+.template-card .lucide-icon {
+  color: #ffdd57;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
-      opacity: 0;
+    opacity: 0;
   }
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @keyframes slideIn {
   from {
-      transform: translateY(20px);
-      opacity: 0;
+    transform: translateY(20px);
+    opacity: 0;
   }
   to {
-      transform: translateY(0);
-      opacity: 1;
+    transform: translateY(0);
+    opacity: 1;
   }
 }

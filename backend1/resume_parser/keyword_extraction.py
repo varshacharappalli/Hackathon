@@ -1,19 +1,22 @@
 from json import loads, dumps
 import webbrowser
-from flask import Flask, request, render_template_string,jsonify
+from flask import Flask, request, render_template_string, jsonify
 import asyncio
 from functools import wraps
-import requests
 import json
 from together import Together
+from flask_cors import CORS
 
 # Import resume extraction function from server.py
 from server import extract_resume
 
-client = Together(api_key='')
+client = Together(api_key='cbf0436b8057b8ea4ec386a5985500d8cdb6382bb61c39ac1d3ac0aa9136bcf4')
 
 # Flask App
 app = Flask(__name__)
+CORS(app)
+
+CORS(app, resources={r"/match": {"origins": "http://localhost:5173"}})
 
 def async_route(f):
     @wraps(f)
@@ -143,6 +146,7 @@ Return ONLY a JSON array of inferred required skills, no other text. Example:
             "qualifications": [],
             "skills_note": "Failed to analyze job description"
         }
+
 def compare_skills(resume_skills, job_skills):
     matched = set(resume_skills).intersection(set(job_skills))
     missing = set(job_skills) - matched
@@ -155,8 +159,12 @@ def calculate_overall_match(skills_score, achievement_score):
 @app.route("/match", methods=["POST"])
 @async_route
 async def match_resume():
-    job_description = request.form["job_description"]
+    data = request.get_json()  # Extract JSON data
+    job_description = data.get("job_description")  # Get job description from JSON
     
+    if not job_description:
+        return jsonify({"status": "error", "message": "Job description is required"}), 400
+
     # Get resume data asynchronously
     resume_data = await extract_resume()
     resume_dict = loads(dumps(resume_data))
