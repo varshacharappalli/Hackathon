@@ -16,7 +16,7 @@ app.add_middleware(
 
 # Load SpaCy model & Together API
 nlp = spacy.load("en_core_web_sm")
-client = Together(api_key="tgp_v1_Rb4er_VIiCbN8bfslpwL1-a-CcNJOLAlcMD8c0BbAGk")
+client = Together(api_key="1ad7ef03cfb27a21c12f21566b97620a46f199cfc5b5a5e356d05d399d0a9606")
 
 def extract_text_from_pdf(pdf_path):
     return extract_text(pdf_path)
