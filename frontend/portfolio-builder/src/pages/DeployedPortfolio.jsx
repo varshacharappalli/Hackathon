@@ -1,98 +1,40 @@
 import React, { useEffect, useState } from "react";
-import Handlebars from "handlebars";
 
-const DeployedPortfolio = ({ templateId=1, data }) => {
-  const [template, setTemplate] = useState({ html: "", css: "" });
+const DeployedPortfolio = ({ templateId = 1, data }) => {
+  const [TemplateComponent, setTemplateComponent] = useState(null);
   const [deployUrl, setDeployUrl] = useState("");
   const [error, setError] = useState(null);
 
+  console.log(data);
+
   const githubRepo = "varshacharappalli/Hackathon";
-  const baseUrl = `https://raw.githubusercontent.com/${githubRepo}/main/frontend/portfolio-builder/src/temp/`;
 
   useEffect(() => {
     const loadTemplate = async () => {
       try {
-        setError(null); // Reset error state
-        
-        // Log the URLs being fetched for debugging
-        console.log('Fetching HTML from:', `${baseUrl}temp${templateId}.html`);
-        console.log('Fetching CSS from:', `${baseUrl}temp${templateId}.css`);
+        setError(null);
+        console.log("Starting template load...");
 
-        const [htmlResponse, cssResponse] = await Promise.all([
-          fetch(`${baseUrl}temp${templateId}.html`),
-          fetch(`${baseUrl}temp${templateId}.css`)
-        ]);
-
-        // Check if responses are ok
-        if (!htmlResponse.ok) {
-          throw new Error(`HTML template ${templateId} not found (${htmlResponse.status})`);
-        }
-        if (!cssResponse.ok) {
-          throw new Error(`CSS template ${templateId} not found (${cssResponse.status})`);
-        }
-
-        const [htmlText, cssText] = await Promise.all([
-          htmlResponse.text(),
-          cssResponse.text()
-        ]);
-
-        setTemplate({
-          html: htmlText,
-          css: cssText,
-        });
+        // Dynamically import the template component
+        const module = await import(`./temp/temp${templateId}.jsx`);
+        setTemplateComponent(() => module.default);
       } catch (error) {
-        console.error(`Error loading template ${templateId}:`, error);
-        setError(`Failed to load template ${templateId}: ${error.message}`);
-        setTemplate({ html: "", css: "" });
+        console.error(`Error loading template:`, error);
+        setError("Template not found");
       }
     };
 
     loadTemplate();
-  }, [templateId, baseUrl]); 
-
-  useEffect(() => {
-    if (template.css) {
-      const styleElement = document.createElement("style");
-      styleElement.textContent = template.css;
-      // Add a unique identifier to the style element
-      styleElement.setAttribute('data-template-id', `template-${templateId}`);
-      document.head.appendChild(styleElement);
-
-      return () => {
-        // Remove only this template's style element
-        const existingStyle = document.querySelector(`style[data-template-id="template-${templateId}"]`);
-        if (existingStyle) {
-          document.head.removeChild(existingStyle);
-        }
-      };
-    }
-  }, [template.css, templateId]);
-
-  const createMarkup = () => {
-    try {
-      if (!template.html) {
-        return { __html: '' };
-      }
-      const templateScript = Handlebars.compile(template.html);
-      const renderedHtml = templateScript(data);
-      return { __html: renderedHtml };
-    } catch (error) {
-      console.error('Error rendering template:', error);
-      return { __html: `<div class="error">Error rendering template: ${error.message}</div>` };
-    }
-  };
+  }, [templateId]);
 
   const deployTemplate = () => {
-    const deployedUrl = `https://${githubRepo.split("/")[0]}.github.io/Hackathon/frontend/portfolio-builder/src/temp${templateId}/temp${templateId}.html`;
+    const deployedUrl = `https://${githubRepo.split("/")[0]}.github.io/Hackathon/frontend/portfolio-builder/src/temp/temp${templateId}.html`;
     setDeployUrl(deployedUrl);
   };
 
   const viewSourceCode = () => {
-    const htmlUrl = `${baseUrl}temp${templateId}.html`;
-    const cssUrl = `${baseUrl}temp${templateId}.css`;
-    
-    window.open(htmlUrl, "_blank");
-    window.open(cssUrl, "_blank");
+    const repoUrl = `https://github.com/${githubRepo}/tree/main/frontend/portfolio-builder/src/temp`;
+    window.open(repoUrl, "_blank");
   };
 
   return (
@@ -101,9 +43,9 @@ const DeployedPortfolio = ({ templateId=1, data }) => {
         <div className="text-red-600 font-medium p-4 bg-red-100 rounded-lg">
           {error}
         </div>
-      ) : (
+      ) : TemplateComponent ? (
         <>
-          <div dangerouslySetInnerHTML={createMarkup()} className="w-full max-w-3xl" />
+          <TemplateComponent {...data} />
           <div className="flex space-x-4">
             <button
               onClick={deployTemplate}
@@ -127,9 +69,12 @@ const DeployedPortfolio = ({ templateId=1, data }) => {
             </p>
           )}
         </>
+      ) : (
+        <p>Loading template...</p>
       )}
     </div>
   );
 };
 
 export default DeployedPortfolio;
+
