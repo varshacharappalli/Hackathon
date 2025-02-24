@@ -3,13 +3,12 @@ import { Mail, Code, Briefcase, Star } from "lucide-react"; // Importing icons f
 import { PortfolioTemplate } from "../temp/PortfolioTemplate";
 
 
-
 const DeployedPortfolio = ({ templateId = 1, data }) => {
   const [deployUrl, setDeployUrl] = useState("");
 
   const deployTemplate = () => {
     const githubRepo = "varshacharappalli/Hackathon";
-    const deployedUrl = `https://${githubRepo.split("/")[0]}.github.io/Hackathon/frontend/portfolio-builder/src/temp/Portfoliotemp.jsx`;
+    const deployedUrl = `https://${githubRepo.split("/")[0]}.github.io/Hackathon/frontend/portfolio-builder/src/temp/PortfolioTemplate.jsx`;
     setDeployUrl(deployedUrl);
   };
 

@@ -13,6 +13,7 @@ function App() {
         <Route path="/createdportfolio" element={<Portfolio/>} />
         <Route path="/" element={<Home/>} />
         <Route path="/createportfolio" element={<CreatePort/>}/>
+        <Route path="/checkscore" element={<CheckScore/>}/>
       </Routes>
       </BrowserRouter>
     </>
