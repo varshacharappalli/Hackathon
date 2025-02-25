@@ -6,11 +6,18 @@ from functools import wraps
 import json
 from together import Together
 from flask_cors import CORS
+from dotenv import load_dotenv
+import os
+
+load_dotenv() 
+
+api_key = os.getenv("TOGETHER_API_KEY")
+
 
 # Import resume extraction function from server.py
 from server import extract_resume
 
-client = Together(api_key='cbf0436b8057b8ea4ec386a5985500d8cdb6382bb61c39ac1d3ac0aa9136bcf4')
+client = Together(api_key=api_key)
 
 # Flask App
 app = Flask(__name__)
