@@ -1,20 +1,25 @@
 import React, { useState } from "react";
-import { Mail, Code, Briefcase, Star } from "lucide-react"; // Importing icons for Work Experience and Achievements
+import { useLocation } from "react-router-dom"; // Import useLocation
 import { PortfolioTemplate } from "../temp/PortfolioTemplate";
+import { PortfolioTemplate2 } from "../temp/PortfolioTemplate2";
 
-
-const DeployedPortfolio = ({ templateId = 1, data }) => {
+const DeployedPortfolio = ({ data }) => {
+  const location = useLocation(); // Get the location object
+  const { templateId } = location.state || { templateId: 1 }; // Default to 1 if not provided
   const [deployUrl, setDeployUrl] = useState("");
 
   const deployTemplate = () => {
     const githubRepo = "varshacharappalli/Hackathon";
-    const deployedUrl = `https://${githubRepo.split("/")[0]}.github.io/Hackathon/frontend/portfolio-builder/src/temp/PortfolioTemplate.jsx`;
+    const deployedUrl = `https://${githubRepo.split("/")[0]}.github.io/Hackathon/frontend/portfolio-builder/src/temp/PortfolioTemplate${templateId}.jsx`;
     setDeployUrl(deployedUrl);
   };
 
+  // Conditional rendering based on templateId
+  const SelectedTemplate = templateId === 1 ? PortfolioTemplate : PortfolioTemplate2;
+
   return (
     <div className="p-6 space-y-6">
-      <PortfolioTemplate data={data} />
+      <SelectedTemplate data={data} />
       <div className="flex justify-center">
         <button
           onClick={deployTemplate}
