@@ -5,6 +5,12 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 from typing import Dict, Any
 import logging
+from dotenv import load_dotenv
+import os
+
+load_dotenv() 
+
+api_key = os.getenv("TOGETHER_API_KEY")
 
 # Set up logging with more detail
 logging.basicConfig(
@@ -23,7 +29,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = Together(api_key="910a0ba863a724cfee505f6c9e622309ac8b09b51f340e6c8ab64d2789edac32")
+client = Together(api_key=api_key)
 
 def extract_text_from_pdf(pdf_path: str) -> str:
     try:
