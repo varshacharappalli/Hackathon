@@ -9,9 +9,9 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  # Load environment variables from .env file
+load_dotenv() 
 
-api_key = os.getenv("TOGETHER_API_KEY")  # Use environment variable
+api_key = os.getenv("TOGETHER_API_KEY")
 
 
 # Import resume extraction function from server.py
