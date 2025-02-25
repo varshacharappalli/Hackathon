@@ -291,7 +291,7 @@ async def match_resume():
             "job_requirements": job_data
         }
     }
-
+    print(response_data)
     return jsonify(response_data)
 
 if __name__ == "__main__":

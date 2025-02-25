@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, Loader } from 'lucide-react';
 import '../styling/CheckScore.css';
+import { INTERVIEW_MATERIALS } from '../api1';
+
 
 const CheckScore = () => {
   const [jobDescription, setJobDescription] = useState('');
@@ -12,6 +14,8 @@ const CheckScore = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [fileInfo, setFileInfo] = useState(null);
   const [resumeData, setResumeData] = useState(null);
+  const [showInterviewPrep, setShowInterviewPrep] = useState(false);
+  const [interviewMaterials, setInterviewMaterials] = useState(null);
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
@@ -150,9 +154,33 @@ const CheckScore = () => {
         throw new Error(data.message);
       }
       setResult(data);
+      // Reset interview prep state when new results come in
+      setShowInterviewPrep(false);
+      setInterviewMaterials(null);
     } catch (error) {
       console.error('Error matching resume:', error);
       setError(error.message || 'Failed to match resume with job description');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInterviewPrepClick = async () => {
+    setLoading(true);
+    
+    try {
+      // In a real application, you would fetch interview materials from the server
+      // For now, we'll use the sample data to simulate an API call
+      
+      // Simulating API delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // Set interview materials with sample data
+      setInterviewMaterials(INTERVIEW_MATERIALS);
+      setShowInterviewPrep(true);
+    } catch (error) {
+      console.error('Error fetching interview materials:', error);
+      setError('Failed to fetch interview preparation materials');
     } finally {
       setLoading(false);
     }
@@ -170,6 +198,28 @@ const CheckScore = () => {
         ))}
       </ul>
     );
+  };
+
+  const renderInterviewQuestions = (questions, category) => {
+    if (!questions || !Array.isArray(questions) || questions.length === 0) {
+      return <p className="text-gray-500 italic">No questions available</p>;
+    }
+    
+    return questions.map((item, index) => (
+      <div key={index} className="mb-6 bg-white p-4 rounded-md shadow-sm">
+        <h4 className="font-bold text-indigo-700">{item.skill}</h4>
+        <div className="mt-2">
+          <p className="font-medium">Question:</p>
+          <p className="mb-2">{item.question}</p>
+          
+          <p className="font-medium text-green-700">Rationale:</p>
+          <p className="mb-2">{item.rationale}</p>
+          
+          <p className="font-medium text-blue-700">Assessment Guidance:</p>
+          <p>{item.assessment_guidance}</p>
+        </div>
+      </div>
+    ));
   };
 
   return (
@@ -310,6 +360,62 @@ const CheckScore = () => {
                     {renderSkillsList(result.match_results.achievement_analysis?.growth_areas)}
                   </div>
                 </div>
+
+                {/* Interview Prep Button */}
+                {!showInterviewPrep && (
+                  <div className="mt-6">
+                    <button 
+                      className={`px-4 py-2 rounded-md ${loading ? 'bg-gray-400' : 'bg-purple-600'} text-white w-full`}
+                      onClick={handleInterviewPrepClick}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <span className="flex items-center justify-center">
+                          <Loader className="animate-spin mr-2" size={16} />
+                          Preparing Interview Materials...
+                        </span>
+                      ) : 'Prepare for Interview'}
+                    </button>
+                  </div>
+                )}
+
+                {/* Interview Preparation Section */}
+                {showInterviewPrep && interviewMaterials && (
+                  <div className="mt-8 border-t pt-6">
+                    <h3 className="text-xl font-bold mb-4">Interview Preparation Guide</h3>
+                    
+                    <div className="bg-indigo-50 p-4 rounded-md mb-6">
+                      <p className="text-indigo-800">
+                        Based on your resume match analysis, we've prepared tailored interview questions to help you prepare. 
+                        The questions are divided into categories targeting both your existing skills and areas for growth.
+                      </p>
+                    </div>
+                    
+                    <div className="mb-8">
+                      <h4 className="text-lg font-bold text-green-700 mb-4">Questions about Your Existing Skills</h4>
+                      {renderInterviewQuestions(interviewMaterials.questions.existing_skills, 'existing_skills')}
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-lg font-bold text-amber-700 mb-4">Questions about Growth Areas</h4>
+                      <p className="text-gray-700 mb-4">
+                        These questions will help you prepare for topics where you might have less experience but are important for the role.
+                      </p>
+                      {renderInterviewQuestions(interviewMaterials.questions.growth_areas, 'growth_areas')}
+                    </div>
+                    
+                    <div className="mt-6 bg-blue-50 p-4 rounded-md">
+                      <h4 className="font-bold text-blue-800">Interview Preparation Tips</h4>
+                      <ul className="list-disc pl-6 mt-2">
+                        <li>Research the company thoroughly before your interview</li>
+                        <li>Prepare specific examples that demonstrate your skills</li>
+                        <li>Practice answering these questions out loud</li>
+                        <li>For growth areas, be honest about your experience level but emphasize your eagerness to learn</li>
+                        <li>Prepare thoughtful questions to ask the interviewer</li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

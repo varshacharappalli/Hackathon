@@ -598,3 +598,123 @@ button:disabled:after {
     padding: 15px;
   }
 }
+
+/* Interview Preparation Section Styles */
+.interview-prep-container {
+  margin-top: 32px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: var(--transition-smooth);
+}
+
+.interview-prep-container:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.interview-prep-header {
+  font-size: 1.75rem;
+  color: var(--primary-color);
+  margin-bottom: 16px;
+  text-align: center;
+  position: relative;
+}
+
+.interview-prep-header::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--primary-gradient);
+  margin: 8px auto 0;
+  border-radius: 2px;
+}
+
+.interview-prep-description {
+  font-size: 1.1rem;
+  color: #4b5563;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.interview-question {
+  background: rgba(240, 245, 255, 0.8);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: var(--transition-smooth);
+}
+
+.interview-question:hover {
+  background: rgba(240, 245, 255, 1);
+  transform: translateY(-2px);
+}
+
+.interview-question h4 {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.interview-question p {
+  color: #374151;
+  margin: 4px 0;
+}
+
+.interview-tips {
+  background: rgba(245, 254, 255, 0.9);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  margin-top: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.interview-tips h4 {
+  font-size: 1.25rem;
+  color: var(--success-color);
+  margin-bottom: 12px;
+}
+
+.interview-tips ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.interview-tips li {
+  margin-bottom: 8px;
+  color: #374151;
+  position: relative;
+}
+
+.interview-tips li::before {
+  content: '✓';
+  position: absolute;
+  left: -20px;
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+/* Responsive Adjustments for Interview Preparation */
+@media (max-width: 768px) {
+  .interview-prep-container {
+    padding: 16px;
+  }
+
+  .interview-prep-header {
+    font-size: 1.5rem;
+  }
+
+  .interview-prep-description {
+    font-size: 1rem;
+  }
+
+  .interview-question h4 {
+    font-size: 1.1rem;
+  }
+
+  .interview-tips h4 {
+    font-size: 1.1rem;
+  }
+}
