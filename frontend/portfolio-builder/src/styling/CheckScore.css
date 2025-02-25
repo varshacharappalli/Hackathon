@@ -1,11 +1,17 @@
-/* CheckScore.css - Ultra Modern Premium Styling */
+Here's an updated version of the CSS with some improvements:
 
+```css
 /* Custom Properties */
 :root {
+  --primary-color: #4f46e5;
   --primary-gradient: linear-gradient(135deg, #4f46e5, #3b82f6);
+  --secondary-color: #f8fafc;
   --secondary-gradient: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  --success-color: #10b981;
   --success-gradient: linear-gradient(135deg, #10b981, #059669);
+  --warning-color: #f59e0b;
   --warning-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+  --error-color: #ef4444;
   --error-gradient: linear-gradient(135deg, #ef4444, #dc2626);
   --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --glow-shadow: 0 0 20px rgba(79, 70, 229, 0.2);

@@ -1,59 +1,17 @@
 import 'bulma/css/bulma.css';
-import React, { useState, useCallback } from 'react';
-import { Upload, Loader } from 'lucide-react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styling/Home.css';
 
 export default function Home() {
-  const [isDragging, setIsDragging] = useState(false);
-  const [file, setFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
 
-  const handleDragOver = useCallback((e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
-
-  const handleDrop = useCallback((e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile?.type === 'application/pdf') {
-      setFile(droppedFile);
-    }
-  }, []);
-
-  const handleFileSelect = useCallback((e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile?.type === 'application/pdf') {
-      setFile(selectedFile);
-    }
-  }, []);
-
   const handleCheckScore = () => {
-    if (file) {
-      setIsUploading(true);
-      setTimeout(() => {
-        setIsUploading(false);
-        navigate('/checkscore');
-      }, 1000);
-    }
+    navigate('/checkscore');
   };
 
   const handleGeneratePortfolio = () => {
-    if (file) {
-      setIsUploading(true);
-      setTimeout(() => {
-        setIsUploading(false);
-        navigate('/createportfolio');
-      }, 1000);
-    }
+    navigate('/createportfolio');
   };
 
   return (
@@ -65,51 +23,30 @@ export default function Home() {
 
           {/* Main Content */}
           <div className="box">
-            {/* Drop Zone */}
-            <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              className={`dropzone ${isDragging ? 'is-active' : ''}`}
-            >
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={handleFileSelect}
-                className="file-input"
-                id="file-upload"
-                aria-label="Upload PDF Resume"
-              />
-              <label htmlFor="file-upload" className="file-label">
-                <Upload className="icon" />
-                <p className="subtitle">
-                  {file ? file.name : 'Drag and drop your PDF resume here'}
-                </p>
-                <p className="has-text-grey">
-                  {file ? 'Click to change file' : 'or click to upload'}
-                </p>
-              </label>
+            <div className="has-text-centered mb-5">
+              <p className="subtitle">
+                Welcome to the AI Resume Optimizer
+              </p>
+              <p className="has-text-grey mb-5">
+                Upload your resume and either check your score or generate a portfolio
+              </p>
             </div>
 
             {/* Buttons */}
-            <div className="buttons">
+            <div className="buttons is-centered">
               <button
                 className="button is-warning"
-                disabled={!file || isUploading}
                 onClick={handleCheckScore}
                 aria-label="Check Resume Score"
               >
-                {isUploading ? <Loader className="icon" /> : 'Check Score'}
-                {isUploading && '...'}
+                Check Score
               </button>
               <button
                 className="button is-danger"
-                disabled={!file || isUploading}
                 onClick={handleGeneratePortfolio}
                 aria-label="Generate Portfolio"
               >
-                {isUploading ? <Loader className="icon" /> : 'Generate Portfolio'}
-                {isUploading && '...'}
+                Generate Portfolio
               </button>
             </div>
           </div>

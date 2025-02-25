@@ -8,22 +8,18 @@ from together import Together
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
+import requests
 
 load_dotenv() 
 
 api_key = os.getenv("TOGETHER_API_KEY")
 
-
-# Import resume extraction function from server.py
-from server import extract_resume
-
+# Initialize Together client
 client = Together(api_key=api_key)
 
 # Flask App
 app = Flask(__name__)
-CORS(app)
-
-CORS(app, resources={r"/match": {"origins": "http://localhost:5173"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 def async_route(f):
     @wraps(f)
@@ -74,15 +70,26 @@ Return only a JSON object with this exact structure, no other text:
     )
 
     try:
+        # First try to parse as pure JSON
         return loads(response.choices[0].message.content)
     except (AttributeError, IndexError, json.JSONDecodeError):
-        print("❌ Error: Failed to parse achievement analysis response.")
-        return {
-            "achievement_score": 0,
-            "analysis": "Failed to analyze achievements",
-            "key_matches": [],
-            "growth_areas": []
-        }
+        try:
+            # If that fails, try to extract JSON from markdown code block
+            content = response.choices[0].message.content
+            if "```json" in content:
+                json_part = content.split("```json")[1].split("```")[0].strip()
+                return loads(json_part)
+            elif "```" in content:
+                json_part = content.split("```")[1].split("```")[0].strip()
+                return loads(json_part)
+        except (AttributeError, IndexError, json.JSONDecodeError, ValueError):
+            print("❌ Error: Failed to parse achievement analysis response.")
+            return {
+                "achievement_score": 0,
+                "analysis": "Failed to analyze achievements",
+                "key_matches": [],
+                "growth_areas": []
+            }
 
 async def analyze_job_description(job_description):
     """Analyze job description and infer skills if not explicitly mentioned"""
@@ -112,7 +119,16 @@ Example Output:
     )
 
     try:
-        initial_analysis = loads(response.choices[0].message.content)
+        # Try different parsing strategies to handle various response formats
+        content = response.choices[0].message.content
+        if "```json" in content:
+            json_part = content.split("```json")[1].split("```")[0].strip()
+            initial_analysis = loads(json_part)
+        elif "```" in content:
+            json_part = content.split("```")[1].split("```")[0].strip()
+            initial_analysis = loads(json_part)
+        else:
+            initial_analysis = loads(content)
         
         # If no skills found, infer them from responsibilities
         if not initial_analysis.get("skills") or len(initial_analysis["skills"]) == 0:
@@ -136,7 +152,16 @@ Return ONLY a JSON array of inferred required skills, no other text. Example:
             )
             
             try:
-                inferred_skills = loads(inference_response.choices[0].message.content)
+                inference_content = inference_response.choices[0].message.content
+                if "```json" in inference_content:
+                    json_part = inference_content.split("```json")[1].split("```")[0].strip()
+                    inferred_skills = loads(json_part)
+                elif "```" in inference_content:
+                    json_part = inference_content.split("```")[1].split("```")[0].strip()
+                    inferred_skills = loads(json_part)
+                else:
+                    inferred_skills = loads(inference_content)
+                
                 initial_analysis["skills"] = inferred_skills
                 initial_analysis["skills_note"] = "Skills were inferred from job responsibilities and qualifications"
             except (json.JSONDecodeError, AttributeError, IndexError) as e:
@@ -155,35 +180,85 @@ Return ONLY a JSON array of inferred required skills, no other text. Example:
         }
 
 def compare_skills(resume_skills, job_skills):
-    matched = set(resume_skills).intersection(set(job_skills))
-    missing = set(job_skills) - matched
+    # Make sure we're working with lists
+    if not isinstance(resume_skills, list):
+        resume_skills = []
+    if not isinstance(job_skills, list):
+        job_skills = []
+        
+    # Convert to lowercase for better matching
+    resume_skills_lower = [skill.lower() for skill in resume_skills]
+    job_skills_lower = [skill.lower() for skill in job_skills]
+    
+    # Find matches
+    matched = []
+    for job_skill in job_skills:
+        for resume_skill in resume_skills:
+            if job_skill.lower() in resume_skill.lower() or resume_skill.lower() in job_skill.lower():
+                matched.append(job_skill)
+                break
+    
+    # Find missing
+    missing = [skill for skill in job_skills if skill not in matched]
+    
     return matched, missing
 
 def calculate_overall_match(skills_score, achievement_score):
     # Weighted average: 40% skills, 60% achievements
     return (skills_score * 0.4) + (achievement_score * 0.6)
 
+async def get_resume_data():
+    """Get resume data from local storage or session"""
+    try:
+        # Try to get from localStorage via the server
+        resume_data = request.json.get("resume_data")
+        if resume_data:
+            return resume_data
+            
+        # If not available, return empty data
+        return {
+            "name": "",
+            "phone": "",
+            "email": "",
+            "skills": [],
+            "achievements": [],
+            "work_experience": []
+        }
+    except Exception as e:
+        print(f"Error retrieving resume data: {str(e)}")
+        return {
+            "name": "",
+            "phone": "",
+            "email": "",
+            "skills": [],
+            "achievements": [],
+            "work_experience": []
+        }
+
 @app.route("/match", methods=["POST"])
 @async_route
 async def match_resume():
     data = request.get_json()  # Extract JSON data
-    job_description = data.get("job_description")  # Get job description from JSON
+    if not data:
+        return jsonify({"status": "error", "message": "Invalid JSON data"}), 400
+        
+    job_description = data.get("job_description")
+    resume_data = data.get("resume_data")  # Get resume data from request
     
     if not job_description:
         return jsonify({"status": "error", "message": "Job description is required"}), 400
 
-    # Get resume data asynchronously
-    resume_data = await extract_resume()
-    resume_dict = loads(dumps(resume_data))
+    if not resume_data:
+        return jsonify({"status": "error", "message": "Resume data is required"}), 400
 
     # Analyze job requirements and skills match
     job_data = await analyze_job_description(job_description)
     job_skills = job_data.get("skills", [])
-    matched_skills, missing_skills = compare_skills(resume_dict.get("skills", []), job_skills)
+    matched_skills, missing_skills = compare_skills(resume_data.get("skills", []), job_skills)
     skills_score = (len(matched_skills) / len(job_skills) * 100) if job_skills else 0
 
     # Analyze achievements match
-    achievement_analysis = await analyze_achievements(resume_dict.get("achievements", []), job_description)
+    achievement_analysis = await analyze_achievements(resume_data.get("achievements", []), job_description)
     achievement_score = achievement_analysis.get("achievement_score", 0)
 
     # Calculate overall match score
@@ -221,4 +296,4 @@ async def match_resume():
 
 if __name__ == "__main__":
     webbrowser.open("http://localhost:5000")
-    app.run(port=5000, debug=True)
+    app.run(port=5000, debug=True, threaded=True)
