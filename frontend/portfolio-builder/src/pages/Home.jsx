@@ -19,13 +19,13 @@ export default function Home() {
       <div className="hero-body">
         <div className="container has-text-centered">
           {/* Header */}
-          <h1 className="title">AI Resume Optimizer</h1>
+          <h1 className="title">Resume Optimizer</h1>
 
           {/* Main Content */}
           <div className="box">
             <div className="has-text-centered mb-5">
               <p className="subtitle">
-                Welcome to the AI Resume Optimizer
+                Welcome to the Resume Optimizer
               </p>
               <p className="has-text-grey mb-5">
                 Upload your resume and either check your score or generate a portfolio
@@ -39,7 +39,7 @@ export default function Home() {
                 onClick={handleCheckScore}
                 aria-label="Check Resume Score"
               >
-                Check Score
+                Resume analysis
               </button>
               <button
                 className="button is-danger"
