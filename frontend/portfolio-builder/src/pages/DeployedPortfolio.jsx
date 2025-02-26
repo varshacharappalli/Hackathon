@@ -9,9 +9,10 @@ const DeployedPortfolio = ({ data }) => {
   const [deployUrl, setDeployUrl] = useState("");
 
   const deployTemplate = () => {
-    const githubRepo = "varshacharappalli/Hackathon";
-    const deployedUrl = `https://${githubRepo.split("/")[0]}.github.io/Hackathon/frontend/portfolio-builder/src/temp/PortfolioTemplate${templateId}.jsx`;
-    setDeployUrl(deployedUrl);
+    const githubBaseUrl = "https://github.com/varshacharappalli/Hackathon/blob/main/frontend/portfolio-builder/src/temp/";
+    const templateFileName = templateId === 1 ? "PortfolioTemplate.jsx" : "PortfolioTemplate2.jsx";
+    const sourceCodeUrl = `${githubBaseUrl}${templateFileName}`;
+    setDeployUrl(sourceCodeUrl);
   };
 
   // Conditional rendering based on templateId
